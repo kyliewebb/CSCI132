@@ -1,0 +1,16 @@
+import java.awt.Color;
+import javax.swing.*;
+
+public class Driver
+{
+    public static void main (String[] args)
+    {
+        JFrame window = new JFrame("Outlab Paint Program"); // Creates a window with title
+        JButton button = new JButton(); // Creates an instance of button
+        window.setSize(500, 500);   // Sets size of window
+        button.setVisible(true);    // Sets button's visibility to true to display
+        button.setText("Hello World");  // Name inside of button        
+        window.add(button); // Adds the button to window
+        window.setVisible(true);    // Sets visible to true to display window        
+    }
+}
