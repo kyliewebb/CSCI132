@@ -1,16 +1,52 @@
-import java.awt.Color;
+package paint.lab;
+
+/**
+ * @authors: Kylie Webb and Dustin Hofer
+ * @Date: 2/04/2016
+ * CSCI 132
+ */
+
 import javax.swing.*;
+import java.awt.*;
+import java.awt.Event.*;
 
 public class Driver
 {
+    private JButton clear, frectangle, foval, erectangle, eoval, line;
+    private JPanel panel1;
+    
     public static void main (String[] args)
     {
-        JFrame window = new JFrame("Outlab Paint Program"); // Creates a window with title
-        JButton button = new JButton(); // Creates an instance of button
-        window.setSize(500, 500);   // Sets size of window
-        button.setVisible(true);    // Sets button's visibility to true to display
-        button.setText("Hello World");  // Name inside of button        
-        window.add(button); // Adds the button to window
-        window.setVisible(true);    // Sets visible to true to display window        
+        Driver tryit = new Driver();
+        //new FrameTest("CSCI132");
+    }
+    
+    public Driver(){
+        JFrame window = new JFrame("Paint Program");
+        clear = new JButton("CLEAR"); // Creates an instance of button
+        clear.addActionListener(new ButtonHandler());
+        frectangle = new JButton("FILLED RECTANGLE"); // Creates an instance of button
+        frectangle.addActionListener(new ButtonHandler());   
+        foval = new JButton("FILLED OVAL"); // Creates an instance of button
+        foval.addActionListener(new ButtonHandler());   
+        erectangle = new JButton("EMPTY RECTANGLE"); // Creates an instance of button
+        erectangle.addActionListener(new ButtonHandler());   
+        eoval = new JButton("EMPTY OVAL"); // Creates an instance of button
+        eoval.addActionListener(new ButtonHandler());   
+        line = new JButton("LINE"); // Creates an instance of button
+        line.addActionListener(new ButtonHandler());   
+        panel1= new JPanel();
+        panel1.add(clear);
+        panel1.add(frectangle);
+        panel1.add(foval);
+        panel1.add(erectangle);
+        panel1.add(eoval);
+        panel1.add(line);
+        panel1.setSize(200,720);
+        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+        window.getContentPane().add(panel1).setBackground(Color.WHITE);
+        window.setDefaultCloseOperation(window.EXIT_ON_CLOSE);
+        window.setSize(1080,720);
+        window.setVisible(true);
     }
 }
