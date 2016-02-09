@@ -1,0 +1,100 @@
+package paint;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.Graphics;
+
+
+
+public class Canvas extends JPanel 
+{
+    Graphics g;
+    String action;
+    int x, y, w, h;
+    Buttons clear, foval, frectangle, rectangle, oval, line;
+    
+    
+    public Canvas()
+    {
+        super();
+        setBackground(Color.WHITE);
+    }
+    
+    public void setAction(String inAction)
+    {
+        inAction = action;
+    }
+    
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        
+        if (action.equals("clear"))    // Clear
+        { 
+            repaint();  
+        }
+        
+        else if (action == Buttons.frectangle)   // Fill Rectangle
+        { 
+            g.fillRect(x, y, w, h);
+            repaint();
+        }
+        
+        else if (action == Buttons.foval)   // Fill Oval
+        { 
+            g.fillOval(x, y, w, h);
+            repaint();
+        }
+        
+        else if (action == Buttons.rectangle)   // Rectangle
+        { 
+            g.drawRect(x, y, w, h);
+            repaint();
+        }
+        
+        else if (action == Buttons.oval)   // Oval
+        { 
+            g.drawOval(x, y, w, h);
+            repaint();
+        }
+        
+        else if (action == Buttons.line)   // Line
+        {
+            g.drawLine(x, y, w, h);
+            repaint();
+        }
+    }  
+    
+    
+    
+    
+        public void mousePressed(MouseEvent e) 
+        {
+            x = e.getX();
+	    y = e.getY();
+	    paintComponent(g);
+	}  
+        
+        public void mouseReleased(MouseEvent e)
+        {
+            w = e.getX();
+            h = e.getY();
+            paintComponent(g);
+        }
+        
+        public void mouseEntered(MouseEvent e) 
+        {
+       
+        }
+        
+        public void mouseExited(MouseEvent e) 
+        {
+       
+        }
+        
+        public void mouseClicked(MouseEvent e) 
+        {
+      
+        }
+
+}
