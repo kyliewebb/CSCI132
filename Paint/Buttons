@@ -1,0 +1,55 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package paint;
+import javax.swing.*;
+import java.awt.event.*;
+/**
+ *
+ * @author s35h737
+ */
+public class Buttons extends JPanel implements ActionListener {
+    private JPanel bpanel; //button panel
+    int button;
+    
+    
+    public Buttons(){
+        JPanel bpanel = new JPanel();
+        
+        JButton clear = new JButton("CLEAR");
+        JButton frectangle = new JButton("FILLED RECTANGLE");
+        JButton foval = new JButton("FILLED OVAL");
+        JButton rectangle = new JButton("RECTANGLE");
+        JButton oval = new JButton("OVAL");
+        JButton line = new JButton("LINE");
+        
+        bpanel.add(clear);
+        bpanel.add(frectangle);
+        bpanel.add(foval);
+        bpanel.add(rectangle);
+        bpanel.add(oval);
+        bpanel.add(line);
+    }
+    
+    public void draw(int x, int y, int height, int width){
+        switch(button){
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            default:
+                repaint();
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+}
