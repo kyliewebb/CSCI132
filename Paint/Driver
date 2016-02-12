@@ -1,10 +1,18 @@
-package paint;
+/**
+ * 
+ * @author Dustin Hofer & Kylie Webb
+ * CSCI: 132 - Paint Program
+ */
 
-public class Driver 
+
+public class Driver
 {
-    public static void main(String[] args) 
+    
+    public static void main(String[] args)
     {
-        new Window();
+        
+        PaintWindow window = new PaintWindow();    // Creates instance of PaintWindow class and is where the program first runs
+        
     }
     
 }
