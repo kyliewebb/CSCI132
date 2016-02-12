@@ -1,0 +1,123 @@
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.*;
+
+/**
+ * This class is called DrawingCanvas and it is the class that draws the shapes, lines or clears the screen
+ * based on the button that is pressed from PaintWindow class. 
+ */
+
+public class DrawingCanvas extends JPanel
+{  
+    
+    int startX;     // Creates int variables of starting and ending (X, Y)
+    int startY;
+    int endX;
+    int endY;
+    static DrawingCanvas instance;  // Creating static instance of DrawingCanvas
+    
+    String action = ""; 
+    
+    PaintWindow clear, fillrectangle, filloval, rectangle, oval, line;  // Importing buttons from PaintWindow to DrawingCanvas
+    
+    public static DrawingCanvas getInstance() // Creates an instance of canvas that can be used by the PaintWindow
+    {
+        if (instance == null) 
+        {
+            instance = new DrawingCanvas();
+        }
+        return instance;
+    }
+    
+    public DrawingCanvas()  // Constructor for DrawingCanvas class
+    {
+        startX = 0;
+        startY = 0;    
+        endX = 100;
+        endY = 100;
+
+        addMouseListener(new MouseComp());  // Adds Mouse Listener to inherited JPanel 
+    }
+    
+    public void setAction(String inAction)
+    {
+        inAction = action;
+    }
+    
+    public void clear() // Clear method that repaints the canvas
+    {
+        repaint();
+    }
+    
+    public void paintComponent(Graphics g)  // This method draws the shapes, given that the conditional statements are true
+    {
+        super.paintComponent(g);        
+        
+        
+        if (action.equals("Clear"))    // Executes clear(); method if action equals "Clear" button
+        { 
+            clear();  
+            repaint();
+        }
+        
+        else if (action.equals("Fill Rectangle"))   // Executes fillRect(); method if action equals "Fill Rectangle" button
+        { 
+            g.fillRect(startX, startY, endX, endY);
+        }
+        
+        else if (action.equals("Fill Oval"))   // Executes fillOval(); method if action equals "Fill Oval" button
+        { 
+            g.fillOval(startX, startY, endX, endY);
+        }
+        
+        else if (action.equals("Rectangle"))   // Executes drawRect(); method if action equals "Rectangle" button
+        { 
+            g.drawRect(startX, startY, endX, endY);
+        }
+        
+        else if (action.equals("Oval"))   // Executes drawOval(); method if action equals "Oval" button
+        { 
+            g.drawOval(startX, startY, endX, endY);
+        }
+        
+        else if (action.equals("Line"))   // Executes drawLine(); method if action equals "Line" button
+        {
+            g.drawLine(startX, startY, endX, endY);
+        }
+    }
+    
+    public void drawing()
+    {
+        Graphics2D g2 = (Graphics2D)getGraphics();
+        g2.drawRect(startX, startY, endX, endY);
+    }
+    
+    public class MouseComp implements MouseListener 
+    {
+        public void mouseClicked(MouseEvent e) 
+        {
+            startX = e.getY();
+            startY = e.getY();
+            //paintComponent(g);
+        }
+
+        public void mouseEntered(MouseEvent e) 
+        {
+        }
+
+        public void mousePressed(MouseEvent e) 
+        {
+            endX = e.getX();
+            endY = e.getY();
+            //paintComponent(g);
+        }
+
+        public void mouseReleased(MouseEvent e) 
+        {
+        }
+
+        public void mouseExited(MouseEvent evt) 
+        {
+        }
+    }           
+}
