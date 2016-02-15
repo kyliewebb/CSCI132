@@ -23,7 +23,7 @@ public class PaintWindow extends JFrame implements ActionListener
     public PaintWindow()    // PaintWindow Constructor where the magic happens
     {
         
-         canvas = canvas.getInstance();
+         canvas = DrawingCanvas.getInstance();
         
           JFrame frame = new JFrame("Paint Program");   // Creates new frame with title "Paint Program"
           frame.setSize(600, 600);  // Sets frame size
@@ -62,40 +62,30 @@ public class PaintWindow extends JFrame implements ActionListener
           
     }    
     
-        public void actionPerformed(ActionEvent e) 
-        {
-            Object active = e.getSource();
-
-            if (active.equals(clear)) 
-            {
-                canvas.setAction("Clear");
-                canvas.repaint();
-            }         
-            else if (active.equals(fillrectangle)) 
-            {
-                canvas.setAction("Fill Rectangle");
-                canvas.repaint();
-
-            } 
-            else if (active.equals(filloval)) 
-            {
-                canvas.setAction("Fill Oval");
-                canvas.repaint();
-            } 
-            else if (active.equals(rectangle)) 
-            {
-                canvas.setAction("Rectangle");
-                canvas.repaint();
-            } 
-            else if (active.equals(oval)) 
-            {
-                canvas.setAction("Oval");
-                canvas.repaint();
-            } 
-            else if (active.equals(line)) 
-            {
-                canvas.setAction("Line");
-                canvas.repaint();
-            }         
-        }
-    }    
+    public void actionPerformed(ActionEvent ae)
+    {
+         String button = ae.getActionCommand();
+        switch (button) {
+            case "Oval":
+                canvas.setShape(Shapes.oval);
+                break;
+            case "Rectangle":
+                canvas.setShape(Shapes.rectangle);
+                break;
+            case "Fill Oval":
+                canvas.setShape(Shapes.oval);
+                break;
+            case "Fill Rectangle":
+                canvas.setShape(Shapes.rectangle);
+                break;
+            case "Line":
+                canvas.setShape(Shapes.line);
+                break;
+            case "Clear":
+                repaint();
+                break;
+            default:
+                break;
+        }         
+    }   
+}    
