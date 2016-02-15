@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * This class is called DrawingCanvas and it is the class that draws the shapes, lines or clears the screen
@@ -8,17 +9,28 @@ import java.awt.*;
  */
 
 public class DrawingCanvas extends JPanel
-{  
-    
+{   
     int startX;     // Creates int variables of starting and ending (X, Y)
     int startY;
-    int endX;
-    int endY;
-    static DrawingCanvas instance;  // Creating static instance of DrawingCanvas
+    int width;
+    int height;
+    
+    BufferedImage image;    // Creates a buffered image
+    
+    Graphics2D rf;
+    
+    private static DrawingCanvas instance;  // Creating static instance of DrawingCanvas
     
     String action = ""; 
     
+    int shape = 0;
+    
     PaintWindow clear, fillrectangle, filloval, rectangle, oval, line;  // Importing buttons from PaintWindow to DrawingCanvas
+    
+    public DrawingCanvas()  // Constructor for DrawingCanvas class
+    {
+        addMouseListener(new MouseListener());  // Adds Mouse Listener to inherited JPanel 
+    }
     
     public static DrawingCanvas getInstance() // Creates an instance of canvas that can be used by the PaintWindow
     {
@@ -29,14 +41,9 @@ public class DrawingCanvas extends JPanel
         return instance;
     }
     
-    public DrawingCanvas()  // Constructor for DrawingCanvas class
+    public void setShape(int m) // Sets shape equal to int of shape (Used in PaintWindow class)
     {
-        startX = 0;
-        startY = 0;    
-        endX = 100;
-        endY = 100;
-
-        addMouseListener(new MouseComp());  // Adds Mouse Listener to inherited JPanel 
+        shape = m;
     }
     
     public void setAction(String inAction)
@@ -46,78 +53,120 @@ public class DrawingCanvas extends JPanel
     
     public void clear() // Clear method that repaints the canvas
     {
+        image = null;
         repaint();
     }
     
     public void paintComponent(Graphics g)  // This method draws the shapes, given that the conditional statements are true
     {
-        super.paintComponent(g);        
+        super.paintComponent(g);
+        Graphics2D g5 = (Graphics2D)g;
         
-        
-        if (action.equals("Clear"))    // Executes clear(); method if action equals "Clear" button
-        { 
-            clear();  
-            repaint();
-        }
-        
-        else if (action.equals("Fill Rectangle"))   // Executes fillRect(); method if action equals "Fill Rectangle" button
-        { 
-            g.fillRect(startX, startY, endX, endY);
-        }
-        
-        else if (action.equals("Fill Oval"))   // Executes fillOval(); method if action equals "Fill Oval" button
-        { 
-            g.fillOval(startX, startY, endX, endY);
-        }
-        
-        else if (action.equals("Rectangle"))   // Executes drawRect(); method if action equals "Rectangle" button
-        { 
-            g.drawRect(startX, startY, endX, endY);
-        }
-        
-        else if (action.equals("Oval"))   // Executes drawOval(); method if action equals "Oval" button
-        { 
-            g.drawOval(startX, startY, endX, endY);
-        }
-        
-        else if (action.equals("Line"))   // Executes drawLine(); method if action equals "Line" button
+        if (image == null)
         {
-            g.drawLine(startX, startY, endX, endY);
+            int width = this.getWidth();
+            int height = this.getHeight();
+            image = (BufferedImage)(this.createImage(width, height));
+            rf = image.createGraphics();            
         }
     }
     
     public void drawing()
-    {
-        Graphics2D g2 = (Graphics2D)getGraphics();
-        g2.drawRect(startX, startY, endX, endY);
+    {         
+        switch (action) {
+        // Executes clear(); method if action equals "Clear" button
+            case "Clear":
+                clear();
+                repaint();
+                break;
+        // Executes fillRect(); method if action equals "Fill Rectangle" button
+            case "Fill Rectangle":
+                rf.fillRect(startX, startY, width, height);
+                break;
+        // Executes fillOval(); method if action equals "Fill Oval" button
+            case "Fill Oval":
+                rf.fillOval(startX, startY, width, height);
+                break;
+        // Executes drawRect(); method if action equals "Rectangle" button
+            case "Rectangle":
+                rf.drawRect(startX, startY, width, height);
+                break;
+        // Executes drawOval(); method if action equals "Oval" button
+            case "Oval":
+                rf.drawOval(startX, startY, width, height);
+                break;
+        // Executes drawLine(); method if action equals "Line" button
+            case "Line":
+                rf.drawLine(startX, startY, width, height);
+                break;
+            default:
+                break;
+        }
+        repaint();    
     }
     
-    public class MouseComp implements MouseListener 
+    public class MouseListener implements MouseListener
     {
-        public void mouseClicked(MouseEvent e) 
+        public void mouseExited(MouseEvent e)
         {
-            startX = e.getY();
-            startY = e.getY();
-            //paintComponent(g);
+            // Nothing goes in here
         }
-
-        public void mouseEntered(MouseEvent e) 
+        
+        public void mouseEntered(MouseEvent e)
         {
+            // Nothing goes in here
         }
-
-        public void mousePressed(MouseEvent e) 
+        
+        public void mouseClicked(MouseEvent e)
         {
-            endX = e.getX();
-            endY = e.getY();
-            //paintComponent(g);
+            // Nothing goes in here because we are dragging the mouse
         }
-
-        public void mouseReleased(MouseEvent e) 
+        
+        public void mousePressed(MouseEvent e)
         {
+            startX = e.getX();
+            startY = e.getY();            
         }
-
-        public void mouseExited(MouseEvent evt) 
+        
+        public void mouseReleased(MouseEvent e)
         {
+            int x;
+            int endX = e.getX();
+            int endY = e.getY();
+            
+            if (endX < startX)
+            {
+                if (endY < startY)
+                {
+                    width = startX - endX;
+                    height = startY - endY;
+                    startX = endX;
+                    startY = endY;
+                }             
+                else
+                {
+                    width = startX - endX;
+                    height = endY - startY;
+                    startX = endX;
+                }
+            }
+            
+            else
+            {
+                if (endY < startY)
+                {
+                    width = endX - startX;
+                    height = startX - endY;
+                    startY = endY;
+                }
+                else
+                {
+                    width = endX - startX;
+                    height = endY - startY;
+                }
+            }            
+            drawing();        
         }
-    }           
+    }    
 }
+
