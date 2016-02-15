@@ -1,0 +1,16 @@
+/**
+ * Dustin Hofer & Kylie Webb
+ * 
+ * This is the Shapes class which sets the button names 
+ * to an integer and creates static final variables.
+ * 
+ */
+public class Shapes 
+{
+    public static final int rectangle = 1;
+    public static final int oval = 2;
+    public static final int fillrectangle = 3; 
+    public static final int filloval = 4;
+    public static final int line = 5;      
+    
+}
