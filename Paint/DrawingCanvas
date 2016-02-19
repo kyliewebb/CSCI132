@@ -8,28 +8,24 @@ import java.awt.image.BufferedImage;
  * based on the button that is pressed from PaintWindow class. 
  */
 
-public class DrawingCanvas extends JPanel
+public class DrawingCanvas extends JPanel implements MouseListener
 {   
     int startX;     // Creates int variables of starting and ending (X, Y)
     int startY;
     int width;
     int height;
+    int endX;
+    int endY; 
+    BufferedImage image;    // Creates a buffered image    
+    private static Graphics2D rf;    
+    private static DrawingCanvas instance;  // Creating static instance of DrawingCanvas   
     
-    BufferedImage image;    // Creates a buffered image
-    
-    Graphics2D rf;
-    
-    private static DrawingCanvas instance;  // Creating static instance of DrawingCanvas
-    
-    String action = ""; 
-    
-    int shape = 0;
-    
+    int shape = 0;    
     PaintWindow clear, fillrectangle, filloval, rectangle, oval, line;  // Importing buttons from PaintWindow to DrawingCanvas
     
     public DrawingCanvas()  // Constructor for DrawingCanvas class
     {
-        addMouseListener(new MouseListener());  // Adds Mouse Listener to inherited JPanel 
+        this.addMouseListener(this); // Adds mouse listener to instance of DrawingCanvas
     }
     
     public static DrawingCanvas getInstance() // Creates an instance of canvas that can be used by the PaintWindow
@@ -38,13 +34,16 @@ public class DrawingCanvas extends JPanel
         {
             instance = new DrawingCanvas();
         }
-        return instance;
+        return instance;        
+    }
+    
+    public static Graphics2D getInstanceOfGraphics()    // Returns Graphics2D rf that is used when selecting a color in PaintWindow
+    {
+        return rf;
     }
     
     public void setShape(int m) // Sets shape equal to int of shape (Used in PaintWindow class)
-    {
-        shape = m;
-    }
+    {        shape = m;    }   
     
     public void setAction(String inAction)
     {
@@ -57,116 +56,113 @@ public class DrawingCanvas extends JPanel
         repaint();
     }
     
+    @Override
     public void paintComponent(Graphics g)  // This method draws the shapes, given that the conditional statements are true
     {
         super.paintComponent(g);
-        Graphics2D g5 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g;  // Creates g5 variable of type Graphics2D
         
         if (image == null)
         {
-            int width = this.getWidth();
-            int height = this.getHeight();
-            image = (BufferedImage)(this.createImage(width, height));
+            width = this.getWidth();
+            height = this.getHeight();
+            image = (BufferedImage)(instance.createImage(width, height));
             rf = image.createGraphics();            
         }
+        g2.drawImage(image, null, 0, 0);
     }
     
     public void drawing()
-    {         
-        switch (action) {
-        // Executes clear(); method if action equals "Clear" button
-            case "Clear":
-                clear();
-                repaint();
-                break;
+    {      
+        switch (shape) {
         // Executes fillRect(); method if action equals "Fill Rectangle" button
-            case "Fill Rectangle":
+            case Shapes.fillrectangle:
                 rf.fillRect(startX, startY, width, height);
                 break;
         // Executes fillOval(); method if action equals "Fill Oval" button
-            case "Fill Oval":
+            case Shapes.filloval:
                 rf.fillOval(startX, startY, width, height);
                 break;
         // Executes drawRect(); method if action equals "Rectangle" button
-            case "Rectangle":
+            case Shapes.rectangle:
                 rf.drawRect(startX, startY, width, height);
                 break;
         // Executes drawOval(); method if action equals "Oval" button
-            case "Oval":
+            case Shapes.oval:
                 rf.drawOval(startX, startY, width, height);
                 break;
         // Executes drawLine(); method if action equals "Line" button
-            case "Line":
-                rf.drawLine(startX, startY, width, height);
-                break;
+            case Shapes.line:
+                rf.drawLine(startX, startY, endX, endY);
+                break;  
             default:
                 break;
         }
         repaint();    
-    }
+    }  
     
-    public class MouseListener implements MouseListener
+    @Override
+    public void mouseExited(MouseEvent e) 
     {
-        public void mouseExited(MouseEvent e)
-        {
-            // Nothing goes in here
-        }
-        
-        public void mouseEntered(MouseEvent e)
-        {
-            // Nothing goes in here
-        }
-        
-        public void mouseClicked(MouseEvent e)
-        {
-            // Nothing goes in here because we are dragging the mouse
-        }
-        
-        public void mousePressed(MouseEvent e)
-        {
-            startX = e.getX();
-            startY = e.getY();            
-        }
-        
-        public void mouseReleased(MouseEvent e)
-        {
-            int x;
-            int endX = e.getX();
-            int endY = e.getY();
-            
-            if (endX < startX)
+        // Nothing goes in here
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) 
+    {
+        // Nothing goes in here 
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) 
+    {
+        // Nothing goes in here 
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) 
+    {
+        startX = e.getX();
+        startY = e.getY();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) 
+    {
+        endX = e.getX();
+        endY = e.getY();
+        if (endX < startX) 
+        {   
+            if (endY < startY) 
             {
-                if (endY < startY)
-                {
-                    width = startX - endX;
-                    height = startY - endY;
-                    startX = endX;
-                    startY = endY;
-                }             
-                else
-                {
-                    width = startX - endX;
-                    height = endY - startY;
-                    startX = endX;
-                }
+
+                width = startX - endX;
+                height = startY - endY;
+                startX = endX;
+                startY = endY;
             }
-            
-            else
+
+            else 
             {
-                if (endY < startY)
-                {
-                    width = endX - startX;
-                    height = startX - endY;
-                    startY = endY;
-                }
-                else
-                {
-                    width = endX - startX;
-                    height = endY - startY;
-                }
-            }            
-            drawing();        
+                width = startX - endX;
+                height = endY - startY;
+                startX = endX;
+
+            }
         }
-    }    
+          else if (endY < startY) 
+          {
+            width = endX - startX;
+            height = startY - endY;
+            startY = endY;
+          } 
+          else 
+          {
+            width = endX - startX;
+            height = endY - startY;
+          }
+        drawing();
+    }
 }
+
 
