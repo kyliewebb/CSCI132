@@ -1,91 +1,136 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * This class will create the buttons and add them to a button panel which is on the main frame.
- * It will also implement an ActionListener and a MouseListener
+ * This class will create the buttons and add them to a button panel which is on
+ * the main frame. It will also implement an ActionListener and a MouseListener
+ *
  * @author dustinhofer
  */
-
-public class PaintWindow extends JFrame implements ActionListener 
+public class PaintWindow extends JFrame implements ActionListener
 {
+
     JButton clear;  // Buttons
     JButton fillrectangle;  // Buttons
     JButton filloval;   // Buttons
     JButton rectangle;  // Buttons
     JButton oval;   // Buttons
     JButton line;   // Buttons
-    
+    JButton color;  // Color button that opens color chooser
+    Color cccolor = (Color.BLACK);
     DrawingCanvas canvas;   // Creates a canvas that is of type class DrawingCanvas
-    
-    public PaintWindow()    // PaintWindow Constructor where the magic happens
+
+    public PaintWindow() // PaintWindow Constructor where the magic happens
     {
+        canvas = DrawingCanvas.getInstance();
+
+        JFrame frame = new JFrame("Paint Program");   // Creates new frame with title "Paint Program"
+        frame.setSize(800,700);  // Sets frame size
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);    // Closes panel when exit button is pressed
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu file = new JMenu("File");
+        JMenu view = new JMenu("View");
+        JMenu about = new JMenu("About");
+
+        // Creates exit and save buttons as menu items
+        JMenuItem exit = new JMenuItem("Exit");
+        JMenuItem save = new JMenuItem("Save");
+        exit.addActionListener(this);   // Adds Action Listener to exit button
+
+        // Adds exit and save menu items to file menu
+        file.add(save);
+        file.add(exit);
+
+        view.add(new JMenuItem("Blank"));
+
+        about.add(new JMenuItem("About"));
+
+        menuBar.add(file);
+        menuBar.add(view);
+        menuBar.add(about);
+
+
+        JPanel buttonpanel = new JPanel();    // Creates new panel for buttons to rest in
+
+        clear = new JButton("Clear"); // Creates name for clear button
+        fillrectangle = new JButton("Fill Rectangle");    // Creates name for fillrectangle button
+        filloval = new JButton("Fill Oval"); // Creates name for filloval button
+        rectangle = new JButton("Rectangle"); // Creates name for rectangle button
+        oval = new JButton("Oval");   // Creates name for oval button
+        line = new JButton("Line");   // Creates name for line button
         
-         canvas = DrawingCanvas.getInstance();
+        color = new JButton("Choose a Color");
         
-          JFrame frame = new JFrame("Paint Program");   // Creates new frame with title "Paint Program"
-          frame.setSize(600, 600);  // Sets frame size
-          frame.setDefaultCloseOperation(EXIT_ON_CLOSE);    // Closes panel when exit button is pressed
-          
-          
-          JPanel buttonpanel = new JPanel();    // Creates new panel for buttons to rest in
-         
-          
-          clear = new JButton("Clear"); // Creates name for clear button
-          fillrectangle = new JButton("Fill Rectangle");    // Creates name for fillrectangle button
-          filloval = new JButton ("Fill Oval"); // Creates name for filloval button
-          rectangle = new JButton("Rectangle"); // Creates name for rectangle button
-          oval = new JButton("Oval");   // Creates name for oval button
-          line = new JButton("Line");   // Creates name for line button
-          
-          buttonpanel.add(clear);  // Adds clear button to buttonpanel
-          buttonpanel.add(fillrectangle);   // Adds fillrectangle button to buttonpanel
-          buttonpanel.add(filloval);    // Adds filloval button to buttonpanel
-          buttonpanel.add(rectangle);   // Adds rectangle button to buttonpanel
-          buttonpanel.add(oval);    // Adds oval button to buttonpanel
-          buttonpanel.add(line);    // Adds line button to button panel
-          
-          buttonpanel.setBackground(Color.BLUE);
-          
-          clear.addActionListener(this);    // Adds button listener to clear button
-          fillrectangle.addActionListener(this);    // Adds button listener to fillrectangle button
-          filloval.addActionListener(this); // Adds button listener to filloval button
-          rectangle.addActionListener(this);    // Adds button listener to rectangle button
-          oval.addActionListener(this); // Adds button listener to oval button
-          line.addActionListener(this); // Adds button listener to line button
-          
-          frame.getContentPane().add(buttonpanel, BorderLayout.NORTH);  // Adds buttonpanel to Northern end of frame
-          frame.getContentPane().add(canvas, BorderLayout.CENTER);  // Adds canvas to Southern end of frame
-          frame.setVisible(true);   // Sets frame visibility to true
-          
-    }    
+        // Adds the actionListener to the color button which in turn creates a JColorChooser window and lets user select color 
+        color.addActionListener(    
+                new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent event)
+                    {
+                        JLabel label = new JLabel();
+                        cccolor = JColorChooser.showDialog(null, "Pick Your Color", label.getForeground());
+                        DrawingCanvas.getInstanceOfGraphics().setColor(cccolor);
+                    }
+                }
+        );
+        
+        buttonpanel.add(clear);  // Adds clear button to buttonpanel
+        buttonpanel.add(fillrectangle);   // Adds fillrectangle button to buttonpanel
+        buttonpanel.add(filloval);    // Adds filloval button to buttonpanel
+        buttonpanel.add(rectangle);   // Adds rectangle button to buttonpanel
+        buttonpanel.add(oval);    // Adds oval button to buttonpanel
+        buttonpanel.add(line);    // Adds line button to button panel
+        buttonpanel.add(color); // Adds color button to button panel
+        
+        buttonpanel.setBackground(Color.BLUE);   // Background color of button panel is red
+
+        clear.addActionListener(this);    // Adds button listener to clear button
+        fillrectangle.addActionListener(this);    // Adds button listener to fillrectangle button
+        filloval.addActionListener(this); // Adds button listener to filloval button
+        rectangle.addActionListener(this);    // Adds button listener to rectangle button
+        oval.addActionListener(this); // Adds button listener to oval button
+        line.addActionListener(this); // Adds button listener to line button
+
+        frame.setJMenuBar(menuBar);
+        frame.setLocationRelativeTo(null);
+        frame.getContentPane().add(buttonpanel, BorderLayout.NORTH);  // Adds buttonpanel to Northern end of frame
+        frame.getContentPane().add(canvas, BorderLayout.CENTER);  // Adds canvas to Southern end of frame
+        frame.setVisible(true);   // Sets frame visibility to true
+
+    }
     
+    @Override
     public void actionPerformed(ActionEvent ae)
     {
-         String button = ae.getActionCommand();
+        String button = ae.getActionCommand();
+
         switch (button) {
             case "Oval":
-                canvas.setShape(Shapes.oval);
+                canvas.getInstance().setShape(Shapes.oval);
                 break;
             case "Rectangle":
-                canvas.setShape(Shapes.rectangle);
+                canvas.getInstance().setShape(Shapes.rectangle);
                 break;
             case "Fill Oval":
-                canvas.setShape(Shapes.oval);
+                canvas.getInstance().setShape(Shapes.filloval);
                 break;
             case "Fill Rectangle":
-                canvas.setShape(Shapes.rectangle);
+                canvas.getInstance().setShape(Shapes.fillrectangle);
                 break;
             case "Line":
-                canvas.setShape(Shapes.line);
+                canvas.getInstance().setShape(Shapes.line);
                 break;
             case "Clear":
-                repaint();
+                canvas.getInstance().clear();
                 break;
+            case "Exit":
+                System.exit(0);
             default:
                 break;
-        }         
-    }   
-}    
+        }
+    }
+}
