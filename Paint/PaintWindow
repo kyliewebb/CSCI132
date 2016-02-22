@@ -1,3 +1,5 @@
+package paint;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -58,22 +60,45 @@ public class PaintWindow extends JFrame implements ActionListener
         JPanel buttonpanel = new JPanel();    // Creates new panel for buttons to rest in
         
         // Creates icons that use the .png images in the src folder 
-        Icon frect = new ImageIcon(getClass().getResource("frecticon.png"));  
-        Icon rect = new ImageIcon(getClass().getResource("recticon.png"));
-        Icon foval = new ImageIcon(getClass().getResource("fovalicon.png"));
+        Icon frect = new ImageIcon(getClass().getResource("frect.png"));  
+        Icon rect = new ImageIcon(getClass().getResource("rect.png"));
+        Icon foval = new ImageIcon(getClass().getResource("foval.png"));
         Icon ovalicon = new ImageIcon(getClass().getResource("ovalicon.png"));
         Icon clearicon = new ImageIcon(getClass().getResource("clearicon.png"));
         Icon lineicon = new ImageIcon(getClass().getResource("lineicon.png"));
         Icon coloricon = new ImageIcon(getClass().getResource("coloricon.png"));
 
+        
+        
         // Adds icons to the buttons
-        clear = new JButton("Clear", clearicon); // Creates name for clear button
-        fillrectangle = new JButton("Fill Rectangle", frect);    // Creates name for fillrectangle button
-        filloval = new JButton("Fill Oval", foval); // Creates name for filloval button
-        rectangle = new JButton("Rectangle", rect); // Creates name for rectangle button
-        oval = new JButton("Oval", ovalicon);   // Creates name for oval button
-        line = new JButton("Line", lineicon);   // Creates name for line button        
+        clear = new JButton(clearicon); // Creates name for clear button
+        fillrectangle = new JButton(frect);    // Creates name for fillrectangle button
+        filloval = new JButton(foval); // Creates name for filloval button
+        rectangle = new JButton(rect); // Creates name for rectangle button
+        oval = new JButton(ovalicon);   // Creates name for oval button
+        line = new JButton(lineicon);   // Creates name for line button        
         color = new JButton(coloricon);
+        
+        clear.setActionCommand("Clear"); 
+        clear.addActionListener(this);
+        
+        fillrectangle.setActionCommand("Fill Rectangle"); 
+        fillrectangle.addActionListener(this);
+        
+        filloval.setActionCommand("Fill Oval"); 
+        filloval.addActionListener(this);
+        
+        rectangle.setActionCommand("Rectangle"); 
+        rectangle.addActionListener(this);
+        
+        oval.setActionCommand("Oval"); 
+        oval.addActionListener(this);
+        
+        line.setActionCommand("Line"); 
+        line.addActionListener(this);
+        
+        color.setActionCommand("Color"); 
+        color.addActionListener(this);
         
         // Adds the actionListener to the color button which in turn creates a JColorChooser window and lets user select color 
         color.addActionListener(    
