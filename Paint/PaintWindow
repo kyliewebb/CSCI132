@@ -1,8 +1,12 @@
+package paint;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  * This class will create the buttons and add them to a button panel which is on
@@ -35,27 +39,32 @@ public class PaintWindow extends JFrame implements ActionListener
         JMenu file = new JMenu("File");
         JMenu view = new JMenu("View");
         JMenu about = new JMenu("About");
-
+        
         // Creates exit and save buttons as menu items
         JMenuItem exit = new JMenuItem("Exit");
         JMenuItem save = new JMenuItem("Save");
         exit.addActionListener(this);   // Adds Action Listener to exit button
+        about.addActionListener(this);
+        
 
         // Adds exit and save menu items to file menu
         file.add(save);
         file.add(exit);
 
+        //JFrame aboutframe = new JFrame();
+        about.add(new JOptionPane("About"));
+        
         view.add(new JMenuItem("Blank"));
-
-        about.add(new JMenuItem("About"));
 
         menuBar.add(file);
         menuBar.add(view);
         menuBar.add(about);
 
-
         JPanel buttonpanel = new JPanel();    // Creates new panel for buttons to rest in
 
+        Icon ovali = new ImageIcon("ovalicon.png");
+        ovali.setSize(0,0,10,10);
+        
         clear = new JButton("Clear"); // Creates name for clear button
         fillrectangle = new JButton("Fill Rectangle");    // Creates name for fillrectangle button
         filloval = new JButton("Fill Oval"); // Creates name for filloval button
