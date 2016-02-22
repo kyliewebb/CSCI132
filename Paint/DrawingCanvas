@@ -1,180 +1,169 @@
 package paint;
 
 import javax.swing.*;
+import java.awt.event.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 /**
- * This class will create the buttons and add them to a button panel which is on
- * the main frame. It will also implement an ActionListener and a MouseListener
- *
- * @author dustinhofer
+ * This class is called DrawingCanvas and it is the class that draws the shapes, lines or clears the screen
+ * based on the button that is pressed from PaintWindow class. 
  */
-public class PaintWindow extends JFrame implements ActionListener
-{
 
-    JButton clear;  // Buttons
-    JButton fillrectangle;  // Buttons
-    JButton filloval;   // Buttons
-    JButton rectangle;  // Buttons
-    JButton oval;   // Buttons
-    JButton line;   // Buttons
-    JButton color;  // Color button that opens color chooser
-    Color cccolor = (Color.BLACK);
-    DrawingCanvas canvas;   // Creates a canvas that is of type class DrawingCanvas
-
-    public PaintWindow() // PaintWindow Constructor where the magic happens
+public class DrawingCanvas extends JPanel implements MouseListener
+{   
+    int startX;     // Creates int variables of starting and ending (X, Y)
+    int startY;
+    int width;
+    int height;
+    int endX;
+    int endY; 
+    BufferedImage image;    // Creates a buffered image    
+    private static Graphics2D rf;    
+    private static DrawingCanvas instance;  // Creating static instance of DrawingCanvas
+    String action;
+    
+    int shape = 0;    
+    PaintWindow clear, fillrectangle, filloval, rectangle, oval, line;  // Importing buttons from PaintWindow to DrawingCanvas
+    
+    public DrawingCanvas()  // Constructor for DrawingCanvas class
     {
-        canvas = DrawingCanvas.getInstance();
-
-        JFrame frame = new JFrame("Paint Program");   // Creates new frame with title "Paint Program"
-        frame.setSize(800,700);  // Sets frame size
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);    // Closes panel when exit button is pressed
-
-        JMenuBar menuBar = new JMenuBar();  // Creates a new JMenuBar named menuBar
-        JMenu file = new JMenu("File"); // Creates file
-        JMenu view = new JMenu("View"); // Creates view 
-        JMenu about = new JMenu("About");   // Creates about
-
-        // Creates exit and save buttons as menu items
-        JMenuItem exit = new JMenuItem("Exit"); 
-        JMenuItem save = new JMenuItem("Save");
-        JMenuItem logo = new JMenuItem("Logo");
-        exit.addActionListener(this);   // Adds Action Listener to exit button
-        
-
-        // Adds exit and save menu items to file menu
-        file.add(save);
-        file.add(exit);
-
-        view.add(new JMenuItem("Blank"));
-
-        about.add(logo);
-        logo.addActionListener(this);  // Adds Action Listener to logo button
-
-        menuBar.add(file);
-        menuBar.add(view);
-        menuBar.add(about);      
-
-        JPanel buttonpanel = new JPanel();    // Creates new panel for buttons to rest in
-        
-        // Creates icons that use the .png images in the src folder 
-        Icon frect = new ImageIcon(getClass().getResource("frect.png"));  
-        Icon rect = new ImageIcon(getClass().getResource("rect.png"));
-        Icon foval = new ImageIcon(getClass().getResource("foval.png"));
-        Icon ovalicon = new ImageIcon(getClass().getResource("ovalicon.png"));
-        Icon clearicon = new ImageIcon(getClass().getResource("clearicon.png"));
-        Icon lineicon = new ImageIcon(getClass().getResource("lineicon.png"));
-        Icon coloricon = new ImageIcon(getClass().getResource("coloricon.png"));
-
-        
-        
-        // Adds icons to the buttons
-        clear = new JButton(clearicon); // Creates name for clear button
-        fillrectangle = new JButton(frect);    // Creates name for fillrectangle button
-        filloval = new JButton(foval); // Creates name for filloval button
-        rectangle = new JButton(rect); // Creates name for rectangle button
-        oval = new JButton(ovalicon);   // Creates name for oval button
-        line = new JButton("Line", lineicon);   // Creates name for line button        
-        color = new JButton(coloricon);
-        
-        clear.setActionCommand("Clear"); 
-        clear.addActionListener(this);
-        
-        fillrectangle.setActionCommand("Fill Rectangle"); 
-        fillrectangle.addActionListener(this);
-        
-        filloval.setActionCommand("Fill Oval"); 
-        filloval.addActionListener(this);
-        
-        rectangle.setActionCommand("Rectangle"); 
-        rectangle.addActionListener(this);
-        
-        oval.setActionCommand("Oval"); 
-        oval.addActionListener(this);
-        
-        line.setActionCommand("Line"); 
-        line.addActionListener(this);
-        
-        color.setActionCommand("Color"); 
-        color.addActionListener(this);
-        
-        // Adds the actionListener to the color button which in turn creates a JColorChooser window and lets user select color 
-        color.addActionListener(    
-                new ActionListener()
-                {
-                    public void actionPerformed(ActionEvent event)
-                    {
-                        JLabel label = new JLabel();
-                        cccolor = JColorChooser.showDialog(null, "Pick Your Color", label.getForeground());
-                        DrawingCanvas.getInstanceOfGraphics().setColor(cccolor);
-                    }
-                }
-        );
-        
-        buttonpanel.add(clear);  // Adds clear button to buttonpanel
-        buttonpanel.add(fillrectangle);   // Adds fillrectangle button to buttonpanel
-        buttonpanel.add(filloval);    // Adds filloval button to buttonpanel
-        buttonpanel.add(rectangle);   // Adds rectangle button to buttonpanel
-        buttonpanel.add(oval);    // Adds oval button to buttonpanel
-        buttonpanel.add(line);    // Adds line button to button panel
-        buttonpanel.add(color); // Adds color button to button panel
-        
-        buttonpanel.setBackground(Color.ORANGE);   // Background color of button panel is red
-
-        clear.addActionListener(this);    // Adds button listener to clear button
-        fillrectangle.addActionListener(this);    // Adds button listener to fillrectangle button
-        filloval.addActionListener(this); // Adds button listener to filloval button
-        rectangle.addActionListener(this);    // Adds button listener to rectangle button
-        oval.addActionListener(this); // Adds button listener to oval button
-        line.addActionListener(this); // Adds button listener to line button
-
-        frame.setJMenuBar(menuBar);
-        frame.setLocationRelativeTo(null);
-        frame.getContentPane().add(buttonpanel, BorderLayout.NORTH);  // Adds buttonpanel to Northern end of frame
-        frame.getContentPane().add(canvas, BorderLayout.CENTER);  // Adds canvas to Southern end of frame
-        frame.setVisible(true);   // Sets frame visibility to true
-
+        this.addMouseListener(this); // Adds mouse listener to instance of DrawingCanvas
+    }
+    
+    public static DrawingCanvas getInstance() // Creates an instance of canvas that can be used by the PaintWindow
+    {
+        if (instance == null) 
+        {
+            instance = new DrawingCanvas();
+        }
+        return instance;        
+    }
+    
+    public static Graphics2D getInstanceOfGraphics()    // Returns Graphics2D rf that is used when selecting a color in PaintWindow
+    {
+        return rf;
+    }
+    
+    public void setShape(int m) // Sets shape equal to int of shape (Used in PaintWindow class)
+    {        shape = m;    }   
+    
+    public void setAction(String inAction)
+    {
+        inAction = action;
+    }
+    
+    public void clear() // Clear method that repaints the canvas
+    {
+        image = null;
+        repaint();
     }
     
     @Override
-    public void actionPerformed(ActionEvent ae)
+    public void paintComponent(Graphics g)  // This method draws the shapes, given that the conditional statements are true
     {
-        String button = ae.getActionCommand();
-
-        switch (button) {
-            case "Oval":
-                canvas.getInstance().setShape(Shapes.oval);
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g;  // Creates g5 variable of type Graphics2D
+        
+        if (image == null)
+        {
+            width = this.getWidth();
+            height = this.getHeight();
+            image = (BufferedImage)(instance.createImage(width, height));
+            rf = image.createGraphics();            
+        }
+        g2.drawImage(image, null, 0, 0);
+    }
+    
+    public void drawing()
+    {      
+        switch (shape) {
+        // Executes fillRect(); method if action equals "Fill Rectangle" button
+            case Shapes.fillrectangle:
+                rf.fillRect(startX, startY, width, height);
                 break;
-            case "Rectangle":
-                canvas.getInstance().setShape(Shapes.rectangle);
+        // Executes fillOval(); method if action equals "Fill Oval" button
+            case Shapes.filloval:
+                rf.fillOval(startX, startY, width, height);
                 break;
-            case "Fill Oval":
-                canvas.getInstance().setShape(Shapes.filloval);
+        // Executes drawRect(); method if action equals "Rectangle" button
+            case Shapes.rectangle:
+                rf.drawRect(startX, startY, width, height);
                 break;
-            case "Fill Rectangle":
-                canvas.getInstance().setShape(Shapes.fillrectangle);
+        // Executes drawOval(); method if action equals "Oval" button
+            case Shapes.oval:
+                rf.drawOval(startX, startY, width, height);
                 break;
-            case "Line":
-                canvas.getInstance().setShape(Shapes.line);
-                break;
-            case "Clear":
-                canvas.getInstance().clear();
-                break;
-            case "Exit":
-                System.exit(0);
-            case "Logo":
-                JFrame logoframe = new JFrame();
-                logoframe.setSize(500, 500);
-                JButton logobutton;
-                logoframe.setLocationRelativeTo(null);
-                Icon aboutlogo = new ImageIcon(getClass().getResource("paintlogo.png"));
-                logobutton = new JButton(aboutlogo);
-                logoframe.add(logobutton);
-                logoframe.setVisible(true);
+        // Executes drawLine(); method if action equals "Line" button
+            case Shapes.line:
+                rf.drawLine(startX, startY, endX, endY);
+                break;  
             default:
                 break;
         }
+        repaint();    
+    }  
+    
+    @Override
+    public void mouseExited(MouseEvent e) 
+    {
+        // Nothing goes in here
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) 
+    {
+        // Nothing goes in here 
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) 
+    {
+        // Nothing goes in here 
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) 
+    {
+        startX = e.getX();
+        startY = e.getY();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) 
+    {
+        endX = e.getX();
+        endY = e.getY();
+        if (endX < startX) 
+        {   
+            if (endY < startY) 
+            {
+
+                width = startX - endX;
+                height = startY - endY;
+                startX = endX;
+                startY = endY;
+            }
+
+            else 
+            {
+                width = startX - endX;
+                height = endY - startY;
+                startX = endX;
+
+            }
+        }
+          else if (endY < startY) 
+          {
+            width = endX - startX;
+            height = startY - endY;
+            startY = endY;
+          } 
+          else 
+          {
+            width = endX - startX;
+            height = endY - startY;
+          }
+        drawing();
     }
 }
