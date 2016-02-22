@@ -1,12 +1,7 @@
-package paint;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 /**
  * This class will create the buttons and add them to a button panel which is on
@@ -35,44 +30,50 @@ public class PaintWindow extends JFrame implements ActionListener
         frame.setSize(800,700);  // Sets frame size
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);    // Closes panel when exit button is pressed
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu file = new JMenu("File");
-        JMenu view = new JMenu("View");
-        JMenu about = new JMenu("About");
-        
+        JMenuBar menuBar = new JMenuBar();  // Creates a new JMenuBar named menuBar
+        JMenu file = new JMenu("File"); // Creates file
+        JMenu view = new JMenu("View"); // Creates view 
+        JMenu about = new JMenu("About");   // Creates about
+
         // Creates exit and save buttons as menu items
-        JMenuItem exit = new JMenuItem("Exit");
+        JMenuItem exit = new JMenuItem("Exit"); 
         JMenuItem save = new JMenuItem("Save");
+        JMenuItem logo = new JMenuItem("Logo");
         exit.addActionListener(this);   // Adds Action Listener to exit button
-        about.addActionListener(this);
         
 
         // Adds exit and save menu items to file menu
         file.add(save);
         file.add(exit);
 
-        //JFrame aboutframe = new JFrame();
-        about.add(new JOptionPane("About"));
-        
         view.add(new JMenuItem("Blank"));
+
+        about.add(logo);
+        logo.addActionListener(this);  // Adds Action Listener to logo button
 
         menuBar.add(file);
         menuBar.add(view);
-        menuBar.add(about);
+        menuBar.add(about);      
 
         JPanel buttonpanel = new JPanel();    // Creates new panel for buttons to rest in
+        
+        // Creates icons that use the .png images in the src folder 
+        Icon frect = new ImageIcon(getClass().getResource("frecticon.png"));  
+        Icon rect = new ImageIcon(getClass().getResource("recticon.png"));
+        Icon foval = new ImageIcon(getClass().getResource("fovalicon.png"));
+        Icon ovalicon = new ImageIcon(getClass().getResource("ovalicon.png"));
+        Icon clearicon = new ImageIcon(getClass().getResource("clearicon.png"));
+        Icon lineicon = new ImageIcon(getClass().getResource("lineicon.png"));
+        Icon coloricon = new ImageIcon(getClass().getResource("coloricon.png"));
 
-        Icon ovali = new ImageIcon("ovalicon.png");
-        ovali.setSize(0,0,10,10);
-        
-        clear = new JButton("Clear"); // Creates name for clear button
-        fillrectangle = new JButton("Fill Rectangle");    // Creates name for fillrectangle button
-        filloval = new JButton("Fill Oval"); // Creates name for filloval button
-        rectangle = new JButton("Rectangle"); // Creates name for rectangle button
-        oval = new JButton("Oval");   // Creates name for oval button
-        line = new JButton("Line");   // Creates name for line button
-        
-        color = new JButton("Choose a Color");
+        // Adds icons to the buttons
+        clear = new JButton("Clear", clearicon); // Creates name for clear button
+        fillrectangle = new JButton("Fill Rectangle", frect);    // Creates name for fillrectangle button
+        filloval = new JButton("Fill Oval", foval); // Creates name for filloval button
+        rectangle = new JButton("Rectangle", rect); // Creates name for rectangle button
+        oval = new JButton("Oval", ovalicon);   // Creates name for oval button
+        line = new JButton("Line", lineicon);   // Creates name for line button        
+        color = new JButton(coloricon);
         
         // Adds the actionListener to the color button which in turn creates a JColorChooser window and lets user select color 
         color.addActionListener(    
@@ -95,7 +96,7 @@ public class PaintWindow extends JFrame implements ActionListener
         buttonpanel.add(line);    // Adds line button to button panel
         buttonpanel.add(color); // Adds color button to button panel
         
-        buttonpanel.setBackground(Color.BLUE);   // Background color of button panel is red
+        buttonpanel.setBackground(Color.ORANGE);   // Background color of button panel is red
 
         clear.addActionListener(this);    // Adds button listener to clear button
         fillrectangle.addActionListener(this);    // Adds button listener to fillrectangle button
@@ -138,6 +139,15 @@ public class PaintWindow extends JFrame implements ActionListener
                 break;
             case "Exit":
                 System.exit(0);
+            case "Logo":
+                JFrame logoframe = new JFrame();
+                logoframe.setSize(500, 500);
+                JButton logobutton;
+                logoframe.setLocationRelativeTo(null);
+                Icon aboutlogo = new ImageIcon(getClass().getResource("paintlogo.png"));
+                logobutton = new JButton(aboutlogo);
+                logoframe.add(logobutton);
+                logoframe.setVisible(true);
             default:
                 break;
         }
