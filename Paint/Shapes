@@ -1,9 +1,14 @@
+package paint;
+
 /**
  * Dustin Hofer & Kylie Webb
- * 
+ * CSCI 132 - Paint Program
+ * 2/22/2016
+ */
+
+/**
  * This is the Shapes class which sets the button names 
  * to an integer and creates static final variables.
- * 
  */
 public class Shapes 
 {
