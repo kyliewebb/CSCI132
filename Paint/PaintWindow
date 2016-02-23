@@ -4,12 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+/**
+ * Dustin Hofer and Kylie Webb
+ * CSCI 132 - Paint Program
+ * 2/22/2016
+ */
 
 /**
  * This class will create the buttons and add them to a button panel which is on
  * the main frame. It will also implement an ActionListener and a MouseListener
- *
- * @author dustinhofer
  */
 public class PaintWindow extends JFrame implements ActionListener
 {
@@ -50,9 +53,10 @@ public class PaintWindow extends JFrame implements ActionListener
 
         view.add(new JMenuItem("Blank"));
 
-        about.add(logo);
+        about.add(logo); //adds a logo to the dialog box
         logo.addActionListener(this);  // Adds Action Listener to logo button
 
+        //adds the "file", "view" and "about" dropdown menus to the menu bar
         menuBar.add(file);
         menuBar.add(view);
         menuBar.add(about);      
@@ -60,13 +64,13 @@ public class PaintWindow extends JFrame implements ActionListener
         JPanel buttonpanel = new JPanel();    // Creates new panel for buttons to rest in
         
         // Creates icons that use the .png images in the src folder 
-        Icon frect = new ImageIcon(getClass().getResource("frect.png"));  
-        Icon rect = new ImageIcon(getClass().getResource("rect.png"));
-        Icon foval = new ImageIcon(getClass().getResource("foval.png"));
-        Icon ovalicon = new ImageIcon(getClass().getResource("ovalicon.png"));
-        Icon clearicon = new ImageIcon(getClass().getResource("clearicon.png"));
-        Icon lineicon = new ImageIcon(getClass().getResource("lineicon.png"));
-        Icon coloricon = new ImageIcon(getClass().getResource("coloricon.png"));
+        Icon frect = new ImageIcon(getClass().getResource("frect.png")); //filled rectangle
+        Icon rect = new ImageIcon(getClass().getResource("rect.png")); //empty rectangle
+        Icon foval = new ImageIcon(getClass().getResource("foval.png")); //filled oval
+        Icon ovalicon = new ImageIcon(getClass().getResource("ovalicon.png")); //empty oval
+        Icon clearicon = new ImageIcon(getClass().getResource("clearicon.png")); //clear 
+        Icon lineicon = new ImageIcon(getClass().getResource("lineicon.png")); //line
+        Icon coloricon = new ImageIcon(getClass().getResource("coloricon.png")); //color chooser
 
         
         
@@ -79,26 +83,15 @@ public class PaintWindow extends JFrame implements ActionListener
         line = new JButton(lineicon);   // Creates name for line button        
         color = new JButton(coloricon);
         
+        //sets action commands, i.e. makes the buttons equal to strings in a sense,
+        //so that they can be used in a switch statement
         clear.setActionCommand("Clear"); 
-        clear.addActionListener(this);
-        
-        fillrectangle.setActionCommand("Fill Rectangle"); 
-        fillrectangle.addActionListener(this);
-        
+        fillrectangle.setActionCommand("Fill Rectangle");
         filloval.setActionCommand("Fill Oval"); 
-        filloval.addActionListener(this);
-        
         rectangle.setActionCommand("Rectangle"); 
-        rectangle.addActionListener(this);
-        
         oval.setActionCommand("Oval"); 
-        oval.addActionListener(this);
-        
         line.setActionCommand("Line"); 
-        line.addActionListener(this);
-        
         color.setActionCommand("Color"); 
-        color.addActionListener(this);
         
         // Adds the actionListener to the color button which in turn creates a JColorChooser window and lets user select color 
         color.addActionListener(    
@@ -144,7 +137,7 @@ public class PaintWindow extends JFrame implements ActionListener
         String button = ae.getActionCommand();
 
         switch (button) {
-            case "Oval":
+            case "Oval": 
                 canvas.getInstance().setShape(Shapes.oval);
                 break;
             case "Rectangle":
@@ -164,7 +157,8 @@ public class PaintWindow extends JFrame implements ActionListener
                 break;
             case "Exit":
                 System.exit(0);
-            case "Logo":
+            case "Logo": //Case for the logo in the about section of the dropdown menus
+                //follows the same idea as making the big canvas used
                 JFrame logoframe = new JFrame();
                 logoframe.setSize(500, 500);
                 JButton logobutton;
