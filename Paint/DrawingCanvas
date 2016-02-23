@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+/**
+ * Dustin Hofer and Kylie Webb
+ * CSCi 132 - Paint Program
+ * 2/22/2016
+ */
 
 /**
  * This class is called DrawingCanvas and it is the class that draws the shapes, lines or clears the screen
