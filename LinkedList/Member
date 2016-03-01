@@ -1,0 +1,26 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package linkedlistoutlab;
+
+/**
+ *
+ * @author s35h737
+ */
+public class Member {
+    int idnum;
+    
+    public Member(int inID){
+        idnum = inID;
+    }
+    public int setID(){
+        idnum = (int)(Math.random() * 100) + 1;
+        return idnum;
+    }
+    public int getID(){
+        return idnum;
+    }
+}
