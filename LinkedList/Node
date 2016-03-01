@@ -13,7 +13,7 @@ package linkedlistoutlab;
 public class Node {
     private Node cw;
     private Node ccw;
-    private Node id;
+    private Node idnum;
     
     public Node(Node inID){
         id = inID;
@@ -42,6 +42,6 @@ public class Node {
     }
     
     public Node getID(Node id){
-        return id;
+        return idnum;
     }
 }
