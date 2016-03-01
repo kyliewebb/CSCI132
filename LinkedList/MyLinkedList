@@ -1,6 +1,12 @@
 package linkedlistoutlab;
-import java.util.Scanner;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Kylie Webb
@@ -16,34 +22,39 @@ import java.io.File;
 public class MyLinkedList {
     private Node cw;
     private Node ccw;
+    private Node first;
     MyLinkedList list;
     int [] id = {};
-    Node idnum;
+    Scanner input = new Scanner(System.in);
+    int idnum;
     int N;
     int k; //clockwise count
     int m; //counterclockwise count
     
-    public MyLinkedList(){
-        readFile();
-        for(int i = 0; i < N; i++){
-            idnum = i;
-            add(new Node(idnum));
-        }
-    }
     
-    public void readFile(){
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter the file name with extention : ");
-        File file = new File(input.nextLine());
+    public MyLinkedList() throws IOException {
+        BufferedReader br = null;
+        System.out.print("Enter the file name with extension: ");
+        FileReader file = new FileReader(input.nextLine());
+        br = new BufferedReader(file);
+        String line = br.readLine();
+        String[] a = line.split(" ");
+        N = Integer.parseInt(a[0]);
+        k = Integer.parseInt(a[1]);
+        m = Integer.parseInt(a[2]);
+        for(int i = 0; i <= N; i++){
+            add(new Node(new Member(i)));
+            print();
+        }
     }
     
     public void add(Node input){
         if(cw == null){
-            cw = input;
+            cw = first;
             ccw = cw;
         }
         else{
-            ccw.setCW(input);
+            ccw.setCW(first);
             ccw = ccw.getCW();
         }
     }
@@ -64,10 +75,10 @@ public class MyLinkedList {
                 if (iter == cw) {
                     cw = cw.getCW();
                 } else {
-                    lag.setCCW(iter.getCW());
+                    lag.setCW(iter.getCW());
                 }
-                lag.setCCW(iter.getCW());
-                iter.setCCW(null);
+                lag.setCW(iter.getCW());
+                iter.setCW(null);
                 return true;
             } else {
                 lag = iter;
