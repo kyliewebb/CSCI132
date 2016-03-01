@@ -1,0 +1,20 @@
+package linkedlistoutlab;
+
+/**
+ * Kylie Webb
+ * CSCI 132 - Political Riff Raff Outlab
+ * 2/23/2016
+ */
+
+/**
+ * MyLinkedList class for Political Riff Raff outlab
+ * This class creates the node arrays and manages the order and placement of nodes
+ * in the circular doubly linked list
+ */
+public class MyLinkedList {
+    private Node cw;
+    private Node ccw;
+    MyLinkedList list;
+    int [] id = {};
+    
+}
