@@ -1,4 +1,5 @@
 package linkedlistoutlab;
+import java.util.Random;
 
 /**
  * Kylie Webb
@@ -13,10 +14,10 @@ package linkedlistoutlab;
 public class Node {
     private Node cw;
     private Node ccw;
-    private Node idnum;
+    private Member idnum;
     
-    public Node(Node inID){
-        id = inID;
+    public Node(Member inID){
+        idnum = inID;
         cw = null;
         ccw = null;
     }
@@ -41,7 +42,8 @@ public class Node {
         return "id";
     }
     
-    public Node getID(Node id){
-        return idnum;
+    public int getID(){
+        return idnum.getID();
+        
     }
 }
