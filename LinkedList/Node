@@ -1,0 +1,47 @@
+package linkedlistoutlab;
+
+/**
+ * Kylie Webb
+ * CSCI 132 - Political Riff Raff Outlab
+ * /2/22/2016
+ */
+
+/**
+ * Node class for Political Riff Raff Outlab
+ * This class 
+ */
+public class Node {
+    private Node cw;
+    private Node ccw;
+    private Node id;
+    
+    public Node(Node inID){
+        id = inID;
+        cw = null;
+        ccw = null;
+    }
+    
+    public void setCW(Node inCW){
+        cw = inCW;
+    }
+    
+    public Node getCW(){
+        return cw;
+    }
+    
+    public void setCCW(Node inCCW){
+        ccw = inCCW;
+    }
+    
+    public Node getCCW(){
+        return ccw;
+    }
+    
+    public String toString(){
+        return "id";
+    }
+    
+    public Node getID(Node id){
+        return id;
+    }
+}
