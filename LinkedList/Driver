@@ -1,5 +1,9 @@
 package linkedlistoutlab;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Kylie
@@ -10,8 +14,13 @@ public class Driver {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        MyLinkedList list = new MyLinkedList();
+        try {
+            // TODO code application logic here
+            MyLinkedList list = new MyLinkedList();
+        } catch (IOException ex) {
+            //Logger.getLogger(Driver.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("No file found.");
+        }
     }
     
 }
