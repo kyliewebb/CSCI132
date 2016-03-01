@@ -1,4 +1,6 @@
 package linkedlistoutlab;
+import java.util.Scanner;
+import java.io.File;
 
 /**
  * Kylie Webb
@@ -16,5 +18,62 @@ public class MyLinkedList {
     private Node ccw;
     MyLinkedList list;
     int [] id = {};
+    Node idnum;
+    int N;
+    int k; //clockwise count
+    int m; //counterclockwise count
     
+    public MyLinkedList(){
+        readFile();
+        for(int i = 0; i < N; i++){
+            idnum = i;
+            add(new Node(idnum));
+        }
+    }
+    
+    public void readFile(){
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter the file name with extention : ");
+        File file = new File(input.nextLine());
+    }
+    
+    public void add(Node input){
+        if(cw == null){
+            cw = input;
+            ccw = cw;
+        }
+        else{
+            ccw.setCW(input);
+            ccw = ccw.getCW();
+        }
+    }
+    public void print() {
+        Node iter = cw;
+        while (iter != null) {
+            System.out.println("ID: #" + iter.getID());
+            System.out.println();
+            iter = iter.getCW();
+        }
+    }
+
+    public boolean removeID(int idnum) {
+        Node iter = cw;
+        Node lag = cw;
+        while (iter != null) {
+            if (idnum == (iter.getID())) {
+                if (iter == cw) {
+                    cw = cw.getCW();
+                } else {
+                    lag.setCCW(iter.getCW());
+                }
+                lag.setCCW(iter.getCW());
+                iter.setCCW(null);
+                return true;
+            } else {
+                lag = iter;
+                iter = iter.getCW();
+            }
+        }
+        return false;
+    }
 }
